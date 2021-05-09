@@ -10,6 +10,22 @@ app.get('/students', (req, res) => {
         .then(students => res.send(students))
 })
 
+app.post('/students', (req, res) => {
+    const student = req.body
+
+    database('students')
+        .insert(student)
+        .returning('*')
+        .then(student => res.send(student))
+})
+
+app.patch(`/students:id`, (req, res) => {
+    const student = req.body
+    database('students')
+        .where('id', student.id)
+        .update(student)
+})
+
 app.listen(port, () => {
     console.log(`LISTENING ON PORT ${port}`)
 })
